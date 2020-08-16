@@ -5,6 +5,7 @@ sap.ui.define([
     return PropertyValidator.extend("taxone.nfe.model.FluentValidator.DateValidations", {
         constructor: function(objectValidator, propertyName, alias, contextName, condition, control) {
             PropertyValidator.call(this, objectValidator, propertyName, alias, contextName, condition, control);
+            this._ensureValueIsADate();
         },
         //Validates if the value is greater than or equals to a given date.
         greaterThenOrEqualsTo: function(dateToCompare, customMessage) {
@@ -26,6 +27,11 @@ sap.ui.define([
             let message = customMessage || `${this._propertyDescription()} must be less than or equal to ${dateToCompare}`;
             this._addValidationRule(rule, message);
             return this;
-        }
+        },
+        _ensureValueIsADate() {
+            let rule = (value) => this._valueIsNullOrUndefined(value) || this._valueIsOfType(value, 'Date');
+            let message = `${this._propertyDescription()} must be a Date`;
+            this._addValidationRule(rule, message);
+        }  
     });
 });

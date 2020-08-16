@@ -5,6 +5,7 @@ sap.ui.define([
     return PropertyValidator.extend("taxone.nfe.model.FluentValidator.NumberValidations", {
         constructor: function(objectValidator, propertyName, alias, contextName, condition, control) {
             PropertyValidator.call(this, objectValidator, propertyName, alias, contextName, condition, control);
+            this._ensureValueIsANumber();
         },
         //Validates if the value is between two given numbers, NOT including this numbers.
         exclusiveBetween: function(valueToCompare1, valueToCompare2, customMessage) {
@@ -47,6 +48,11 @@ sap.ui.define([
             let message = customMessage || `${this._propertyDescription()} must be less than or equals to ${valueToCompare}`;
             this._addValidationRule(rule, message);
             return this;
-        }
+        },
+        _ensureValueIsANumber() {
+            let rule = (value) => this._valueIsNullOrUndefined(value) || this._valueIsOfType(value, 'Number');
+            let message = `${this._propertyDescription()} must be a Number`;
+            this._addValidationRule(rule, message);
+        }   
     });
 });

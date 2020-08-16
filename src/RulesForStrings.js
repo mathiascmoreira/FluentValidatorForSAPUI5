@@ -5,6 +5,7 @@ sap.ui.define([
     return PropertyValidator.extend("taxone.nfe.model.FluentValidator.StringValidations", {
         constructor: function(objectValidator, propertyName, alias, contextName, condition, control) {
             PropertyValidator.call(this, objectValidator, propertyName, alias, contextName, condition, control);
+            this._ensureValueIsAString();
         },
         //Validates if the value is an empty or whitespace string, null or undefined.
         empty: function(customMessage) {
@@ -40,6 +41,11 @@ sap.ui.define([
             let message = customMessage || `${this._propertyDescription()} can't be empty`;
             this._addValidationRule(rule, message);
             return this;
+        },
+        _ensureValueIsAString() {
+            let rule = (value) => this._valueIsNullOrUndefined(value) || this._valueIsOfType(value, 'String');
+            let message = `${this._propertyDescription()} must be a String`;
+            this._addValidationRule(rule, message);
         }
     });
 });

@@ -5,6 +5,7 @@ sap.ui.define([
     return PropertyValidator.extend("taxone.nfe.model.FluentValidator.ArrayValidations", {
         constructor: function (objectValidator, propertyName, alias, contextName, condition, control) {
             PropertyValidator.call(this, objectValidator, propertyName, alias, contextName, condition, control);
+            this._ensureValueIsAnArray();
         },
         //Validates if the array has no elements, is null or undefined.
         empty: function (customMessage) {
@@ -40,6 +41,11 @@ sap.ui.define([
             let message = customMessage || `${this._propertyDescription()} can't be empty`;
             this._addValidationRule(rule, message);
             return this;
+        },
+        _ensureValueIsAnArray() {
+            let rule = (value) => this._valueIsNullOrUndefined(value) || this._valueIsOfType(value, 'Array');
+            let message = `${this._propertyDescription()} must be an array`;
+            this._addValidationRule(rule, message);
         }
     });
 });
